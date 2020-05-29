@@ -1,7 +1,6 @@
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <iostream>
+#include "game.h"
 
 int main() {
+    srand(time(NULL));
     return 0;
 }
