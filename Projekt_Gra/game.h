@@ -6,6 +6,7 @@
 #include <vector>
 #include <sstream>
 #include "enemy.h"
+#include "player.h"
 class Game : public sf::RenderWindow
 {
 public:

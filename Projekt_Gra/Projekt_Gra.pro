@@ -6,7 +6,8 @@ CONFIG -= qt
 SOURCES += \
         enemy.cpp \
         game.cpp \
-        main.cpp
+        main.cpp \
+        player.cpp
 INCLUDEPATH += "C:/SFML-2.5.1/include"
 LIBS += -L"C:/SFML-2.5.1/lib"
 CONFIG(debug, debug|release){
@@ -17,4 +18,5 @@ CONFIG(debug, debug|release){
 
 HEADERS += \
     enemy.h \
-    game.h
+    game.h \
+    player.h
