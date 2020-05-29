@@ -1,0 +1,11 @@
+#include "game.h"
+
+Game::Game()
+{
+    
+}
+
+Game::Game(sf::String nazwa_okna) : sf::RenderWindow(sf::VideoMode(800,600,nazwa_okna));
+{
+    
+}
