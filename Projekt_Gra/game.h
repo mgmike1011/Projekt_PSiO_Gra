@@ -34,7 +34,11 @@ public:
     void run();
     // --- Koniec gry
     // funkcje dodać!
-
+    // --- Wykrywanie kolizji
+    bool Kolizja(const std::vector<sf::Vector2f>&,const sf::Vector2f&);
+    bool Kolizja(const sf::Transform &,const std::vector<sf::Vector2f>&,const sf::Vector2f&);
+    // --- Aktualizacja przeciwnikow
+    void update(Game &);
 };
 
 #endif // GAME_H
