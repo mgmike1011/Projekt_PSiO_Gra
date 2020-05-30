@@ -8,6 +8,7 @@
 *.obj
 *.ogg
 *.tft
+*.ttf
 # Precompiled Headers
 *.gch
 *.pch
