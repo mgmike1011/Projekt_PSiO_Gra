@@ -6,7 +6,8 @@
 *.lo
 *.o
 *.obj
-
+*.ogg
+*.tft
 # Precompiled Headers
 *.gch
 *.pch
