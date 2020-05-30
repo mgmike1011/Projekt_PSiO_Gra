@@ -1,9 +1,11 @@
 #ifndef PLAYER_H
 #define PLAYER_H
+#include <SFML/Graphics.hpp>
 
-
-class Player
+class Player :public sf::ConvexShape
 {
+private:
+    //
     int hp;
 public:
     Player();
