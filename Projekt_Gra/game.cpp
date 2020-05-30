@@ -133,16 +133,21 @@ void Game::run()
             //gameover(&gracz);
         }
         //Wyswietlanie czasu
-        this->ss.str("Czas: ");
-        this->ss << (int) time_c.asSeconds() << " sek.";
-        this->czas_c.setString(this->ss.str());
-        this->ss.str("");
-        this->draw(this->czas_c);
-
+        ss.str("");
+        ss <<"Czas: "<<(int) time_c.asSeconds() << " sek.";
+        czas_c.setString(ss.str());
+        ss.str("");
+        draw(czas_c);
+        //Wyswietlenie na ekranie wszystkiego
         display();
         if (!pauza)
         {
             time_c = tpause - clock_c.getElapsedTime();
         }
     }
+}
+
+void Game::update(Game &)
+{
+
 }
