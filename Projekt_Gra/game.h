@@ -9,10 +9,7 @@
 #include "player.h"
 class Game : public sf::RenderWindow
 {
-public:
-    // --- Konstruktory
-    Game();
-    Game(sf::String);
+private:
     // ### Tło
     sf::Texture backgroundtx_c;
     sf::RectangleShape background_c;
@@ -24,17 +21,24 @@ public:
     // ### Napisy
     sf::Text koncowy_c;
     sf::Text czas_c;
-    static sf::Font czcionka_c;
+    sf::Font czcionka_c;
     // ### Bufor do konwersji danych
     std::stringstream ss;
     // ### Statki przeciwnika
     std::vector<Enemy> Enemy_c;
     // ### Gwiezdny pyl
     sf::Vertex pyl_c[750];
+public:
+    //settery i gettery
+    void setPause(bool wybor);
+    bool getPause();
+    // --- Konstruktory
+    Game();
+    Game(sf::String);
     // --- Uruchamianie
     void run();
     // --- Koniec gry
-    // funkcje dodać!
+    void gameover(Player*);
     // --- Wykrywanie kolizji
     bool Kolizja(const std::vector<sf::Vector2f>&,const sf::Vector2f&);
     bool Kolizja(const sf::Transform &,const std::vector<sf::Vector2f>&,const sf::Vector2f&);

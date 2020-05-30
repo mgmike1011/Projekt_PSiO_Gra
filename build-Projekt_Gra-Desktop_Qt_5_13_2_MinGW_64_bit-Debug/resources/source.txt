@@ -222,3 +222,21 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 // ### Tło ###
+-pobrane ze strony : https://www.freepngimg.com/png/19262-space-png-clipart
+-licencja : darmowa, twórca prosi jedynie o link do swojej storny: <a href="https://www.freepngimg.com/png/19262-space-png-clipart">Space Png Clipart FreePNGImg.com</a>
+// ### Gracz i przeciwnicy i pociski###
+-pobrane ze strony : https://kenney.nl/assets/space-shooter-redux
+-licencja : 
+###############################################################################
+
+	Space Shooter (Redux, plus fonts and sounds) by Kenney Vleugels (www.kenney.nl)
+
+			------------------------------
+
+			        License (CC0)
+	       http://creativecommons.org/publicdomain/zero/1.0/
+
+	You may use these graphics in personal and commercial projects.
+	Credit (Kenney or www.kenney.nl) would be nice but is not mandatory.
+
+###############################################################################
