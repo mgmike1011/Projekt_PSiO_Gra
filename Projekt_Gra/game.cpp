@@ -158,15 +158,50 @@ void Game::gameover(Player &gracz)
     draw(koncowy_c);
 }
 
+bool Game::Kolizja(const std::vector<sf::Vector2f> &vec1, const sf::Vector2f &vec2)
+{
+    //Algorytm przeksztalca kazdy kolejny bok figury jako wektor ma po swojej prawej stronie punkt
+    int jest=-1;
+    float a,b,c,d,e;
+    for(size_t i=0;i<vec1.size();i++)
+    {
+        a = vec1[i].x;
+        b = vec1[i].y;
+        if(i+1==vec1.size())
+        {
+            c=vec1[0].x;
+        } else {
+            c=vec1[i+1].x;
+        }
+        if(i+1==vec1.size())
+        {
+            d=vec1[0].x;
+        } else {
+            d=vec1[i+1].x;
+        }
+        e = (vec2.x-a)*(d-b)-(vec2.y-b)*(c-a);
+        if(e!=-1)
+        {
+            if(jest==-1)
+            {
+                jest=e>0;
+            } else if ((d>0)!=jest) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 void Game::update(Game &gra)
 {
-   for(auto it = Enemy_c.begin();it!=Enemy_c.end();it++)
-   {
-       if(it->getPosition().x<0||it->getPosition().y<-20||it->getifkill())
-       {
-           Enemy_c.erase(it);
-       }
-       it->update();
-       gra.draw(*it);
-   }
+    for(auto it = Enemy_c.begin();it!=Enemy_c.end();it++)
+    {
+        if(it->getPosition().x<0||it->getPosition().y<-20||it->getifkill())
+        {
+            Enemy_c.erase(it);
+        }
+        it->update();
+        gra.draw(*it);
+    }
 }
