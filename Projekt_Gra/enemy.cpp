@@ -21,7 +21,7 @@ Enemy::Enemy() :sf::ConvexShape()
     kierunek_c= 360/(rand()%6+1);
     setPosition(1333,rand()%720+10);
     sf::Texture tx;
-    if(tx.loadFromFile("resources/Przeciwnik/playerShip3_blue.png"))
+    if(!tx.loadFromFile("resources/Przeciwnik/playerShip3_blue.png"))
     {
         std::cout<<"Nie udalo sie zaladowac tekstury statku przeciwnika"<<std::endl;
     }else
@@ -46,14 +46,17 @@ Enemy::Enemy() :sf::ConvexShape()
     int los = rand()%3;
     switch (los)
     {
-        case 0 :
-            setTexture(tekstury[0]);
+    case 0 :
+        setTexture(tekstury[0]);
+        rotate(90);
         break;
-        case 1 :
-            setTexture(tekstury[1]);
+    case 1 :
+        setTexture(tekstury[1]);
+        rotate(90);
         break;
-        case 2 :
+    case 2 :
         setTexture(tekstury[2]);
+        rotate(90);
         break;
     }
 }

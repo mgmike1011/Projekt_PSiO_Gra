@@ -240,3 +240,8 @@
 	Credit (Kenney or www.kenney.nl) would be nice but is not mandatory.
 
 ###############################################################################
+// ### Tło menu
+-pobrane ze strony: https://www.freepngimg.com/png/19258-space-free-png-image
+-licencja: free Please, give attribution to our website freepngimg.com, if you use this PNG in your blog or website. Thank you!
+<a href="https://www.freepngimg.com/png/19258-space-free-png-image">Space Free Png Image FreePNGImg.com</a>
+-modyfikacja: Miłosz Gajewski

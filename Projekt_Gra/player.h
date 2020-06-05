@@ -7,9 +7,12 @@ class Player :public sf::ConvexShape
 private:
     //
     int hp;
+    int punkty;
 public:
     Player();
     int gethp();
+    void rysuj();
+    int getPunkty();
 };
 
 #endif // PLAYER_H

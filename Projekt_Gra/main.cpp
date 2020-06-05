@@ -1,6 +1,6 @@
 #include "game.h"
 #include <time.h>
-Game Gra("Space war");
+Game Gra;
 int main() {
     srand(time(NULL));
     Gra.run();

@@ -17,16 +17,16 @@ private:
     sf::Clock clock_c; //zegrar gry
     sf::Time time_c; //czas gry
     // ### Pauza
-    bool pauza = true;
+    bool pauza = false;
     // ### Napisy
     sf::Text koncowy_c;
     sf::Text czas_c;
     sf::Font czcionka_c;
-    // ### Bufor do konwersji danych
+    // ### Bufor do napisow
     std::stringstream ss;
     // ### Statki przeciwnika
     std::vector<Enemy> Enemy_c;
-    // ### Gwiezdny pyl
+    // ### Gwiezdny pyl - element ozdobny do imitacji ruchu
     sf::Vertex pyl_c[750];
 public:
     //settery i gettery
@@ -38,7 +38,7 @@ public:
     // --- Uruchamianie
     void run();
     // --- Koniec gry
-    void gameover(Player*);
+    void gameover(Player &gracz);
     // --- Wykrywanie kolizji
     bool Kolizja(const std::vector<sf::Vector2f>&,const sf::Vector2f&);
     bool Kolizja(const sf::Transform &,const std::vector<sf::Vector2f>&,const sf::Vector2f&);
