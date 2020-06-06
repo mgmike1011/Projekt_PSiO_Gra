@@ -135,7 +135,7 @@ void Game::run()
         {
             //gameover(&gracz);
         }
-        //gracz.rysuj();
+        draw(gracz);
         //Wyswietlanie czasu
         ss.str("");
         ss <<"Czas: "<<std::abs((int) time_c.asSeconds()) << " sek.";

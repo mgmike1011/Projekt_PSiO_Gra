@@ -16,12 +16,16 @@ private:
     float speed_c;
     // ### Kierunek
     float kierunek_c;
+    // ### Zmienna do trafien
+    std::vector<sf::Vector2f> wierzcholki;
 public:
     // --- settery i gettery
     void setTexture(sf::Texture);
     bool getifkill();
     bool getifhit();
+    // --- Konstrutor
     Enemy();
+    // --- akturalizacja stanu
     void update();
 };
 

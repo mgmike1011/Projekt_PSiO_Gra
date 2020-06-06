@@ -17,6 +17,7 @@ bool Enemy::getifhit()
 
 Enemy::Enemy() :sf::ConvexShape()
 {
+    int hp =2;
     speed_c = rand()%5+1;
     kierunek_c= 360/(rand()%6+1);
     setPosition(1333,rand()%720+10);
@@ -42,7 +43,6 @@ Enemy::Enemy() :sf::ConvexShape()
     {
         tekstury.emplace_back(tx);
     }
-    srand(time((NULL)));
     int los = rand()%3;
     switch (los)
     {
@@ -59,6 +59,12 @@ Enemy::Enemy() :sf::ConvexShape()
         rotate(90);
         break;
     }
+    setPoint(0,sf::Vector2f(getPosition().x,getPosition().y+100/speed_c));
+    wierzcholki.emplace_back(getPoint(0));
+    setPoint(1,sf::Vector2f(getPosition().x,getPosition().y+100/speed_c));
+    wierzcholki.emplace_back(getPoint(1));
+
+    setPosition(1500,rand()%720);
 }
 
 void Enemy::update()
