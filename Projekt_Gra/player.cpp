@@ -29,3 +29,40 @@ int Player::getPunkty()
 {
     return punkty;
 }
+
+void Player::animate(const sf::Time &elapsed)
+{
+    auto bounds = this->getGlobalBounds();
+    float okres = elapsed.asSeconds();
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        if(bounds.top>0)
+        {
+            move(0,-std::abs(speed)*okres);
+        }
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        if(bounds.top+bounds.height<720)
+        {
+            move(0,std::abs(speed)*okres);
+        }
+    }
+    //Mozliwosc pouszania sie troche do przodu i tylu - do przemyslenia
+    /*
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        if(bounds.left+bounds.width <450)//1280
+        {
+            move(okres*std::abs(speed),0);
+        }
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        if(bounds.left>0)
+        {
+            move(okres*-std::abs(speed),0);
+        }
+    }
+    */
+}

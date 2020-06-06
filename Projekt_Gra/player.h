@@ -2,14 +2,16 @@
 #define PLAYER_H
 #include <SFML/Graphics.hpp>
 #include <sstream>
-#include "bullet.h"
 #include <iostream>
+
+//Stworzone klasy
+#include "bullet.h"
 
 class Player : public sf::Sprite
 {
 private:
     // ### Predkosc
-    float speed =0;
+    float speed =150;
     // ### Punkty zdrowia
     int hp;
     sf::RectangleShape pasek_zdrowia;
@@ -19,7 +21,7 @@ private:
     // ### Tekstura
     sf::Texture tekstura;
     // ### Parametr do wykrywania kolziji
-    std::vector<sf::Vector2i> Punktykolizji;
+    std::vector<sf::Vector2i> Punkty_kolizji;
     // ### Zniszczenie
     bool Zniszony = false;
     // ### Czcionka do punktow i punktow hp
@@ -34,10 +36,18 @@ public:
     // --- gettery i settery
     int gethp();
     int getPunkty();
-    // --- Rysowanie gracza na ekranie i animacja
-    void rysuj();
     // --- Strzelanie
     void shoot();
+    // --- Poruszanie
+    void animate(const sf::Time &elapsed);
+
+    //moze w main!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // --- Rysowanie gracza na ekranie i animacja
+    //void rysuj(Game &);
+    //przechwytywanie zdarzen
+    //void catchEvents(sf::Events &)
+    //metoda aktualizajci update
+    //void uptade(Game &)
 };
 
 #endif // PLAYER_H

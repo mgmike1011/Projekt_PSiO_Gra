@@ -48,15 +48,15 @@ Enemy::Enemy() :sf::ConvexShape()
     {
     case 0 :
         setTexture(tekstury[0]);
-        rotate(90);
+        rotate(-90);
         break;
     case 1 :
         setTexture(tekstury[1]);
-        rotate(90);
+        rotate(-90);
         break;
     case 2 :
         setTexture(tekstury[2]);
-        rotate(90);
+        rotate(-90);
         break;
     }
     setPoint(0,sf::Vector2f(getPosition().x,getPosition().y+100/speed_c));
@@ -76,6 +76,7 @@ void Enemy::update()
             move(30,0);
             speed_c=speed_c*1.2;
             setPointCount(getPointCount()-1);
+            wierzcholki.pop_back();
         }else{
             kill_c=true;
         }

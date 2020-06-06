@@ -31,7 +31,6 @@ Game::Game() : sf::RenderWindow(sf::VideoMode(1280,720),"Space war")
     for(auto &el : pyl_c)
     {
         el.position = sf::Vector2f(rand()%1280,rand()%720);
-        //el.color = sf::Color(155+rand()%100, 155+rand()%100, 155+rand()%100, 255);
         el.color = sf::Color::White;
     }
     // Przypisanie czcionki
@@ -40,7 +39,7 @@ Game::Game() : sf::RenderWindow(sf::VideoMode(1280,720),"Space war")
         std::cout<<"Blad wczytania czcionki"<<std::endl;
     }
     this->koncowy_c.setFont(czcionka_c); //dla napisu koncowego
-    koncowy_c.setPosition(133,200);
+    koncowy_c.setPosition(560,360);
     koncowy_c.setCharacterSize(30);
     koncowy_c.setFillColor(sf::Color::White);
     koncowy_c.setStyle(sf::Text::Bold);
@@ -59,31 +58,42 @@ void Game::run()
     Player gracz;
     sf::Transform pyl_c_Move;//ruch pylu
     // Wydarzenia
-    sf::Event event;
+
     sf::Time tpause;
+    sf::Clock zegar;
     while(this->isOpen())
     {
+        sf::Event event;
         while(this->pollEvent(event))
         {
             if (event.type == sf::Event::Closed || (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))) //Zamykanie okna
             {
                 this->close();
             }
-            if(event.type == sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+            if(event.type == sf::Event::KeyPressed)
             {
-                if(pauza)
+                if(event.type == sf::Keyboard::isKeyPressed(sf::Keyboard::P))
                 {
-                    pauza = false;
-                } else
-                {
-                    pauza = true;
+                    if(pauza == true)
+                    {
+                        pauza = false;
+                    } else
+                    {
+                        pauza = true;
+                    }
                 }
             }
-            if(!pauza)
-            {
-                //Zabezpieczenie, ze podczas pauzy gracz nie  rusza sie
-                //gracz.catchEvents(event);
-            }
+        }
+        sf::Time elapsed = zegar.restart();
+
+        if(pauza==true)
+        {
+            this->clear(sf::Color::Black);
+            this->draw(background_c);
+            this->display();
+            clock_c.restart();
+            tpause = time_c;
+            continue;
         }
         // Koniec czasu
         //        if(gracz.hp>0&&time_c.asSeconds()<=0)
@@ -95,25 +105,16 @@ void Game::run()
          *
          *
          */
-
-        //test!!!!!!!
-        //pauza=false;
-        // !!!!!!!!!!!!!
-        if(pauza)
-        {
-            this->clear(sf::Color::Black);
-            this->draw(background_c);
-            this->display();
-            clock_c.restart();
-            tpause = time_c;
-            continue;
-        }
         // Przeciwnicy
         if(gracz.gethp()>0)
         {
             if(!rand()%30){
                 Enemy_c.emplace_back(Enemy());
             }
+        }
+        if(pauza == false)
+        {
+            gracz.animate(elapsed);
         }
         clear(sf::Color::Black);
         draw(background_c);

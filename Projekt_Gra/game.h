@@ -5,9 +5,12 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+
+// Stworzone klasy
 #include "enemy.h"
 #include "player.h"
-//#include "bullet.h"
+
+
 class Game : public sf::RenderWindow
 {
 private:

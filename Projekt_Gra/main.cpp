@@ -22,6 +22,9 @@ int main() {
     przycisk_r.setTexture(&przycisk);
     przycisk_r.setPosition(560,360);
     przycisk_r.setSize(sf::Vector2f(200,100));
+    przycisk_r.setOutlineColor(sf::Color::White);
+    przycisk.setSmooth(true);
+    przycisk_r.setOutlineThickness(2);
     while(menu.isOpen())
     {
         sf::Event event;
