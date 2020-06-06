@@ -25,7 +25,9 @@ private:
     // ### Zniszczenie
     bool Zniszony = false;
     // ### Czcionka do punktow i punktow hp
-    sf::Text czcionka_pkt_hp;
+    sf::Text tekst_c;
+    sf::Text tekst_hp;
+    sf::Font czcionka_c;
     // ### Napisy
     std::stringstream ss;
     // ### Pociski

@@ -17,7 +17,27 @@ Player::Player()
     pasek_zdrowia.setOutlineColor(sf::Color::White);
     pasek_zdrowia.setOutlineThickness(3);
     //Napisy
+    if(!czcionka_c.loadFromFile("resources/Czcionki/OpenSans-Bold.ttf"))
+    {
+        std::cout<<"Blad wczytania czcionki"<<std::endl;
+    }
     ss<<"Punkty: "<< punkty;
+    tekst_c.setFont(czcionka_c);
+    tekst_c.setFillColor(sf::Color::White);
+    tekst_c.setStyle(sf::Text::Bold);
+    tekst_c.setPosition(220,20);
+    tekst_c.setString(ss.str());
+    tekst_c.setCharacterSize(30);
+    ss.str("");
+
+    ss<<"HP: "<<hp;
+    tekst_hp.setFont(czcionka_c);
+    tekst_hp.setFillColor(sf::Color::White);
+    tekst_hp.setStyle(sf::Text::Bold);
+    tekst_hp.setPosition(300,20);
+    tekst_hp.setString(ss.str());
+    tekst_hp.setCharacterSize(30);
+    ss.str("");
 }
 
 int Player::gethp()
@@ -28,6 +48,11 @@ int Player::gethp()
 int Player::getPunkty()
 {
     return punkty;
+}
+
+void Player::shoot()
+{
+    pociski.emplace_back(bullet(sf::Vector2f(getPosition().x+getTexture()->getSize().x/2,getPosition().y+10)));
 }
 
 void Player::animate(const sf::Time &elapsed)

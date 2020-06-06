@@ -134,7 +134,7 @@ void Game::run()
         }
         if(gracz.gethp()<0)
         {
-            //gameover(&gracz);
+            gameover(gracz);
         }
         draw(gracz);
         //Wyswietlanie czasu
