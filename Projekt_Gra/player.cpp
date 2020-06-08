@@ -91,3 +91,13 @@ void Player::animate(const sf::Time &elapsed)
     }
     */
 }
+
+sf::RectangleShape Player::getpasek_zdrowia()
+{
+    return  pasek_zdrowia;
+}
+
+std::vector<bullet> Player::getpociski()
+{
+    return pociski;
+}

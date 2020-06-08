@@ -138,7 +138,8 @@ void Game::run()
         {
             gameover(gracz);
         }
-        draw(gracz);
+        //draw(gracz);
+        this->draw_player(gracz);
         //Wyswietlanie czasu
         ss.str("");
         ss <<"Czas: "<<std::abs((int) time_c.asSeconds()) << " sek.";
@@ -207,4 +208,20 @@ void Game::update(Game &gra)
         it->update();
         gra.draw(*it);
     }
+}
+
+void Game::draw_player(Player &gracz)
+{
+    //update_player(*this);
+    this->draw(gracz);
+    if(gracz.gethp()>0)
+    {
+        this->draw(gracz.getpasek_zdrowia());
+    }
+    for(auto &el : gracz.getpociski())
+    {
+        this->draw(el);
+    }
+    this->draw(gracz.tekst_hp);
+    this->draw(gracz.tekst_c);
 }

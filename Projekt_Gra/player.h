@@ -25,11 +25,13 @@ private:
     // ### Zniszczenie
     bool Zniszony = false;
     // ### Czcionka do punktow i punktow hp
+public:
     sf::Text tekst_c;
     sf::Text tekst_hp;
     sf::Font czcionka_c;
     // ### Napisy
     std::stringstream ss;
+private:
     // ### Pociski
     std::vector<bullet> pociski;
 public:
@@ -38,11 +40,12 @@ public:
     // --- gettery i settery
     int gethp();
     int getPunkty();
+    sf::RectangleShape getpasek_zdrowia();
+    std::vector<bullet> getpociski();
     // --- Strzelanie
     void shoot();
     // --- Poruszanie
     void animate(const sf::Time &elapsed);
-
     //moze w main!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // --- Rysowanie gracza na ekranie i animacja
     //void rysuj(Game &);

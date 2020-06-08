@@ -48,6 +48,10 @@ public:
     bool Kolizja(const sf::Transform &,const std::vector<sf::Vector2f>&,const sf::Vector2f&);
     // --- Aktualizacja przeciwnikow
     void update(Game &);
+    // --- Aktualizacja gracza
+    void update_player(Game &);
+    // --- Rysowanie gracza
+    void draw_player(Player &gracz);
 };
 
 #endif // GAME_H
