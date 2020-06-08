@@ -44,8 +44,8 @@ Game::Game() : sf::RenderWindow(sf::VideoMode(1280,720),"Space war")
     koncowy_c.setFillColor(sf::Color::White);
     koncowy_c.setStyle(sf::Text::Bold);
     this->czas_c.setFont(czcionka_c); //dla czasu
-    czas_c.setPosition(150,20);
-    czas_c.setCharacterSize(15);
+    czas_c.setPosition(150,10);
+    czas_c.setCharacterSize(23);
     czas_c.setFillColor(sf::Color::White);
     czas_c.setStyle(sf::Text::Bold);
     // Czas
@@ -132,7 +132,7 @@ void Game::run()
         }
         if(gracz.gethp()>0)
         {
-            update(*this);
+            update_gry();
         }
         if(gracz.gethp()<0)
         {
@@ -197,7 +197,7 @@ bool Game::Kolizja(const std::vector<sf::Vector2f> &vec1, const sf::Vector2f &ve
     return true;
 }
 
-void Game::update(Game &gra)
+void Game::update_gry()
 {
     for(auto it = Enemy_c.begin();it!=Enemy_c.end();it++)
     {
@@ -206,22 +206,85 @@ void Game::update(Game &gra)
             Enemy_c.erase(it);
         }
         it->update();
-        gra.draw(*it);
+        this->draw(*it);
     }
 }
 
-void Game::draw_player(Player &gracz)
+void Game::update_player(Player &gracz)
 {
-    //update_player(*this);
-    this->draw(gracz);
+    // Aktualizacja stanu zdrowia i paska stanu zdrowia
     if(gracz.gethp()>0)
     {
-        this->draw(gracz.getpasek_zdrowia());
+        gracz.pasek_zdrowia.setSize(sf::Vector2f(gracz.gethp(),10));
+        for (auto &el: Enemy_c)
+        {
+            if(el.getGlobalBounds().left<=gracz.getGlobalBounds().left+gracz.getGlobalBounds().width &&gracz.getGlobalBounds().intersects(el.getGlobalBounds()))
+            {
+                bool stoop = false;
+                for(auto & pkt:gracz.getPunktykolizji())
+                {
+                    sf::Vector2f p(pkt);
+                    float x = gracz.getTexture()->getSize().x/2;
+                    float y = gracz.getTexture()->getSize().y/2;
+                    if(Kolizja(el.getwierzcholki(),sf::Vector2f(gracz.getPosition().x-x+p.x,gracz.getPosition().y-y+p.y)))
+                    {
+                        el.setkill(true);
+                        gracz.sethp(gracz.gethp()-el.getPointCount());
+                        stoop = true;
+                        break;
+                    }
+                }
+                if(stoop)
+                {
+                    break;
+                }
+            }
+        }
+        // Aktualizacja stanu pociskow
+        for(auto &el:gracz.getpociski())
+        {
+            update_bullet(el,gracz);
+        }
+        for(auto it =  gracz.pociski.begin();it!=gracz.pociski.end();it++)
+        {
+            if(it->getifkill()||it->getPosition().x>1300)
+            {
+                gracz.pociski.erase(it);
+            }
+        }
     }
-    for(auto &el : gracz.getpociski())
-    {
-        this->draw(el);
-    }
-    this->draw(gracz.tekst_hp);
-    this->draw(gracz.tekst_c);
 }
+    void Game::draw_player(Player &gracz)
+    {
+        update_player(gracz);
+        this->draw(gracz);
+        if(gracz.gethp()>0)
+        {
+            this->draw(gracz.getpasek_zdrowia());
+        }
+        for(auto &el : gracz.getpociski())
+        {
+            this->draw(el);
+        }
+        this->draw(gracz.tekst_hp);
+        this->draw(gracz.tekst_c);
+    }
+
+    void Game::update_bullet(bullet &pocisk, Player &gracz)
+    {
+        pocisk.move(pocisk.getspeed(),0);
+        // Trafienia
+        for(auto &el : Game::Enemy_c)
+        {
+            //if(pocisk.getGlobalBounds().intersects(el.getGlobalBounds()) && Kolizja(el.getTransform(),el.getwierzcholki(),el.getPosition()))
+            if(pocisk.getGlobalBounds().intersects(el.getGlobalBounds()) && Kolizja(el.getwierzcholki(),el.getPosition()))
+            {
+                el.sethit(true);
+                pocisk.setkill(true);
+                if(gracz.gethp()>0)
+                {
+                    gracz.addPoint_forplayer();
+                }
+            }
+        }
+    }

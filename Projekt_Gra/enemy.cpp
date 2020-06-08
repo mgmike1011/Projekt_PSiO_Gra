@@ -15,6 +15,21 @@ bool Enemy::getifhit()
     return hit_c;
 }
 
+void Enemy::sethit(bool statement)
+{
+    hit_c = statement;
+}
+
+void Enemy::setkill(bool statement)
+{
+    kill_c = statement;
+}
+
+std::vector<sf::Vector2f> Enemy::getwierzcholki()
+{
+    return wierzcholki;
+}
+
 Enemy::Enemy() :sf::ConvexShape()
 {
     int hp =2;

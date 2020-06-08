@@ -13,11 +13,10 @@ private:
     // ### Predkosc
     float speed =150;
     // ### Punkty zdrowia
-    int hp;
-    sf::RectangleShape pasek_zdrowia;
+    int hp = 100;
     float punkty_paska_zdrowia = 50;
     // ### Zdobyte punkty
-    int punkty;
+    int punkty =0;
     // ### Tekstura
     sf::Texture tekstura;
     // ### Parametr do wykrywania kolziji
@@ -26,22 +25,26 @@ private:
     bool Zniszony = false;
     // ### Czcionka do punktow i punktow hp
 public:
+    sf::RectangleShape pasek_zdrowia;
     sf::Text tekst_c;
     sf::Text tekst_hp;
     sf::Font czcionka_c;
     // ### Napisy
     std::stringstream ss;
-private:
     // ### Pociski
     std::vector<bullet> pociski;
 public:
     // --- Konstruktor
     Player();
     // --- gettery i settery
+    std::vector<sf::Vector2i> getPunktykolizji();
     int gethp();
+    void sethp(int i);
     int getPunkty();
     sf::RectangleShape getpasek_zdrowia();
     std::vector<bullet> getpociski();
+    // --- Dodanie punktu
+    void addPoint_forplayer();
     // --- Strzelanie
     void shoot();
     // --- Poruszanie

@@ -26,7 +26,20 @@ bullet::bullet(const sf::Vector2f &vec)
     }
     int indeks = rand()%2;
     setTexture(&tekstura[indeks]);
-    rotate(90);
     setSize(sf::Vector2f(37,13));
     setPosition(vec.x,vec.y);
+}
+
+float bullet::getspeed()
+{
+    return speed;
+}
+void  bullet::setkill(bool statement)
+{
+    kill = statement;
+}
+
+bool bullet::getifkill()
+{
+ return kill;
 }

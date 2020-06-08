@@ -15,7 +15,10 @@ private:
 public:
     // --- Konstruktor
     bullet(const sf::Vector2f&);
-
+    // --- settery i gettery
+    float getspeed();
+    void setkill(bool statement);
+    bool getifkill();
     //moze w main !!!!!!!!!!!!!!!!!!!!
     //void update(game &);
 };

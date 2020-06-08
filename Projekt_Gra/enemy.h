@@ -23,9 +23,12 @@ public:
     void setTexture(sf::Texture);
     bool getifkill();
     bool getifhit();
+    void sethit(bool statement);
+    void setkill(bool statement);
+    std::vector<sf::Vector2f> getwierzcholki();
     // --- Konstrutor
     Enemy();
-    // --- akturalizacja stanu
+    // --- aktualizacja stanu
     void update();
 };
 
