@@ -27,16 +27,16 @@ int main() {
     przycisk_r.setOutlineThickness(2);
     while(menu.isOpen())
     {
-        sf::Event event;
-        while (menu.pollEvent(event))
+        sf::Event event2;
+        while (menu.pollEvent(event2))
         {
-            if (event.type == sf::Event::Closed)
+            if (event2.type == sf::Event::Closed)
             {
                 menu.close();
             }
-            if(event.type == sf::Event::MouseButtonPressed)
+            if(event2.type == sf::Event::MouseButtonPressed)
             {
-                if(event.mouseButton.button==sf::Mouse::Left)
+                if(event2.mouseButton.button==sf::Mouse::Left)
                 {
                     sf::Vector2i mouse_pos = sf::Mouse::getPosition(menu);
                     if(przycisk_r.getGlobalBounds().contains(mouse_pos.x,mouse_pos.y))

@@ -72,14 +72,16 @@ void Game::run()
             }
             if(event.type == sf::Event::KeyPressed)
             {
-                if(event.type == sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::P))
                 {
                     if(pauza == true)
                     {
                         pauza = false;
+                        std::cout<<"Gra wznowiona."<<std::endl;
                     } else
                     {
                         pauza = true;
+                        std::cout<<"Pauza gry, by kontynuwoac wcisnij przycisk \"p\"."<<std::endl;
                     }
                 }
             }
