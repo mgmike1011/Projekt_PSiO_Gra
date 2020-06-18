@@ -10,6 +10,16 @@ bool Enemy::getifkill()
     return kill_c;
 }
 
+const int &Enemy::getPoints() const
+{
+    return this->Punkty_enemy;
+}
+
+const int &Enemy::getDamage() const
+{
+    return this->damage_;
+}
+
 bool Enemy::getifhit()
 {
     return hit_c;
@@ -45,5 +55,22 @@ Enemy::Enemy(sf::Vector2f &pozycja)
     this->setPointCount(5);
     this->setPosition(pozycja);
 }
+
+void Enemy::draw_enemy(sf::RenderTarget *trg)
+{
+    trg->draw(*this);
+}
+
+const sf::FloatRect Enemy::getBounds() const
+{
+    return this->getGlobalBounds();
+}
+
+void Enemy::update_enemy()
+{
+    this->move(0,speed_c);
+}
+
+Enemy::~Enemy() {}
 
 
