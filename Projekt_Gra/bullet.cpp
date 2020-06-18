@@ -1,33 +1,20 @@
 #include "bullet.h"
 
-bullet::bullet(const sf::Vector2f &vec) : sf::RectangleShape()
+
+bullet::bullet(sf::Texture *tekstura, const sf::Vector2f &pozycja, float kierunek_x_, float kierune_y_, float speed_)
 {
-    sf::Texture tekstura2;
-    if(!tekstura2.loadFromFile("resources/Pociski/laserBlue02.png"))
-    {
-        std::cout<<"Nie udalo sie zaladowac tekstury pocisku niebieskiego"<<std::endl;
-    } else
-    {
-        tekstura.emplace_back(tekstura2);
-    }
-    if(!tekstura2.loadFromFile("resources/Pociski/laserGreen04.png"))
-    {
-        std::cout<<"Nie udalo sie zaladowac tekstury pocisku niebieskiego"<<std::endl;
-    } else
-    {
-        tekstura.emplace_back(tekstura2);
-    }
-    if(!tekstura2.loadFromFile("resources/Pociski/laserRed02.png"))
-    {
-        std::cout<<"Nie udalo sie zaladowac tekstury pocisku niebieskiego"<<std::endl;
-    } else
-    {
-        tekstura.emplace_back(tekstura2);
-    }
-    int indeks = rand()%2;
-    setTexture(&tekstura[indeks]);
-    setSize(sf::Vector2f(37,13));
-    setPosition(vec.x,vec.y);
+    this->setTexture(*tekstura);
+    this->setPosition(pozycja);
+    kierunek.x=kierunek_x_;
+    kierunek.y = kierune_y_;
+    speed = speed_;
+}
+
+const sf::FloatRect bullet::getBounds() const
+{
+    // Zwraca granice obiektu
+    sf::FloatRect granice = this->getGlobalBounds();
+    return granice;
 }
 
 float bullet::getspeed()
@@ -44,9 +31,16 @@ bool bullet::getifkill()
     return kill;
 }
 
-void bullet::animate_bullet(const sf::Time &elapsed)
+void bullet::update_bullet_()
 {
-    //auto bounds = this->getGlobalBounds();
-    float okres = elapsed.asSeconds();
-    sf::RectangleShape::move(speed*okres,0);
+    //Ruch bedzie nastepowal z kazdym wywolaniem
+    this->move(speed*kierunek.x,speed*kierunek.y);
 }
+
+void bullet::draw_bullet(sf::RenderTarget *trg)
+{
+    //Wyswietlanie na ekranie
+    trg->draw(*this);
+}
+
+bullet::~bullet() {}

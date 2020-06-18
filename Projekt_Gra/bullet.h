@@ -2,26 +2,31 @@
 #define BULLET_H
 #include <SFML/Graphics.hpp>
 #include <iostream>
-class bullet : public sf::RectangleShape
+class bullet : public sf::Sprite
 {
 private:
-    // ### Teketura
-    std::vector<sf::Texture> tekstura;
+    // Tekstura zostanie zaladowana na poczatku programu i przypisana na stale
     // ### Predkosc
     float speed = 150;
     // ### Kill
     bool kill = false;
-    // ###
+    // ### Kierunek poruszania sie
+    sf::Vector2f kierunek;
 public:
     // --- Konstruktor
-    bullet(const sf::Vector2f&);
+    bullet(sf::Texture *tekstura,const sf::Vector2f& pozycja, float kierunek_x_, float kierune_y_, float speed_);
+    // --- Do sprawdzania kolizji
+    const sf::FloatRect getBounds() const;
     // --- settery i gettery
     float getspeed();
     void setkill(bool statement);
     bool getifkill();
-    void animate_bullet(const sf::Time &elapsed);
-    //moze w game !!!!!!!!!!!!!!!!!!!!
-    //void update(game &);
+    // --- Update pocisku
+    void update_bullet_();
+    // --- Wyswietlanie
+    void draw_bullet(sf::RenderTarget * trg);
+    // --- Destruktor
+    virtual ~bullet();
 };
 
 #endif // BULLET_H
