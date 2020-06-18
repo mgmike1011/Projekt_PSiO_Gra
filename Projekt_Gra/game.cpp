@@ -10,7 +10,6 @@ bool Game::getPause()
     return pauza;
 }
 
-
 Game::Game() : sf::RenderWindow(sf::VideoMode(1280,720),"Space war")
 {
     this->setFramerateLimit(60);//ustawinie limitu klatek, 60, jak na nowej generacji konsol :)
@@ -27,7 +26,6 @@ Game::Game() : sf::RenderWindow(sf::VideoMode(1280,720),"Space war")
     background_c.setPosition(0,0);
     background_c.setSize(sf::Vector2f(1280,720));
     // Gwiezdny pyl
-    srand(time(NULL));
     for(auto &el : pyl_c)
     {
         el.position = sf::Vector2f(rand()%1280,rand()%720);
@@ -84,6 +82,10 @@ void Game::run()
                         std::cout<<"Pauza gry, by kontynuwoac wcisnij przycisk \"p\"."<<std::endl;
                     }
                 }
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+                {
+                    gracz.shoot();
+                }
             }
         }
         sf::Time elapsed = zegar.restart();
@@ -97,16 +99,6 @@ void Game::run()
             tpause = time_c;
             continue;
         }
-        // Koniec czasu
-        //        if(gracz.hp>0&&time_c.asSeconds()<=0)
-        //        {
-        //              gracz.hp=0;
-        //              gracz.zniszcz = false;
-        //        }
-        /*
-         *
-         *
-         */
         // Przeciwnicy
         if(gracz.gethp()>0)
         {
@@ -117,7 +109,12 @@ void Game::run()
         if(pauza == false)
         {
             gracz.animate(elapsed);
+            for(auto &el : gracz.pociski)
+            {
+                el.animate_bullet(elapsed);
+            }
         }
+        //Czyszczenie ekranu
         clear(sf::Color::Black);
         draw(background_c);
         //pyl gwiezdny - imersja ruchu
@@ -138,7 +135,6 @@ void Game::run()
         {
             gameover(gracz);
         }
-        //draw(gracz);
         this->draw_player(gracz);
         //Wyswietlanie czasu
         ss.str("");
@@ -199,14 +195,18 @@ bool Game::Kolizja(const std::vector<sf::Vector2f> &vec1, const sf::Vector2f &ve
 
 void Game::update_gry()
 {
+    Enemy *enemy;
     for(auto it = Enemy_c.begin();it!=Enemy_c.end();it++)
     {
-        if(it->getPosition().x<0||it->getPosition().y<-20||it->getifkill())
+        enemy = &(*it);
+        if(enemy->getPosition().x<0||enemy->getPosition().y<-20||enemy->getifkill())
         {
             Enemy_c.erase(it);
+            it--;
+            continue;
         }
-        it->update();
-        this->draw(*it);
+        enemy->update_enemy();
+        this->draw(*enemy);
     }
 }
 
@@ -262,7 +262,7 @@ void Game::update_player(Player &gracz)
         {
             this->draw(gracz.getpasek_zdrowia());
         }
-        for(auto &el : gracz.getpociski())
+        for(auto &el : gracz.pociski)
         {
             this->draw(el);
         }

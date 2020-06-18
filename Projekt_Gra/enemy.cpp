@@ -30,9 +30,8 @@ std::vector<sf::Vector2f> Enemy::getwierzcholki()
     return wierzcholki;
 }
 
-Enemy::Enemy() :sf::ConvexShape()
+Enemy::Enemy() : sf::ConvexShape()
 {
-    int hp =2;
     speed_c = rand()%5+1;
     kierunek_c= 360/(rand()%6+1);
     setPosition(1333,rand()%720+10);
@@ -82,9 +81,9 @@ Enemy::Enemy() :sf::ConvexShape()
     setPosition(1500,rand()%720);
 }
 
-void Enemy::update()
+void Enemy::update_enemy()
 {
-    if(hit_c)
+    if(hit_c == true)
     {
         if(getPointCount()>2)
         {

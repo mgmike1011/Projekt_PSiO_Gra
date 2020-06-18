@@ -29,7 +29,7 @@ public:
     // --- Konstrutor
     Enemy();
     // --- aktualizacja stanu
-    void update();
+    void update_enemy();
 };
 
 #endif // ENEMY_H

@@ -1,6 +1,6 @@
 #include "bullet.h"
 
-bullet::bullet(const sf::Vector2f &vec)
+bullet::bullet(const sf::Vector2f &vec) : sf::RectangleShape()
 {
     sf::Texture tekstura2;
     if(!tekstura2.loadFromFile("resources/Pociski/laserBlue02.png"))
@@ -41,5 +41,12 @@ void  bullet::setkill(bool statement)
 
 bool bullet::getifkill()
 {
- return kill;
+    return kill;
+}
+
+void bullet::animate_bullet(const sf::Time &elapsed)
+{
+    //auto bounds = this->getGlobalBounds();
+    float okres = elapsed.asSeconds();
+    sf::RectangleShape::move(speed*okres,0);
 }

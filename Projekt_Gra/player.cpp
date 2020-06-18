@@ -83,10 +83,11 @@ void Player::animate(const sf::Time &elapsed)
             move(0,std::abs(speed)*okres);
         }
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-    {
-        this->shoot();
-    }
+    //if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+    //{
+    //    this->shoot();
+
+    //}
     //Mozliwosc pouszania sie troche do przodu i tylu - do przemyslenia
     /*
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))

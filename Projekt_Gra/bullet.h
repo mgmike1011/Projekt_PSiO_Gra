@@ -8,7 +8,7 @@ private:
     // ### Teketura
     std::vector<sf::Texture> tekstura;
     // ### Predkosc
-    float speed = 5;
+    float speed = 150;
     // ### Kill
     bool kill = false;
     // ###
@@ -19,7 +19,8 @@ public:
     float getspeed();
     void setkill(bool statement);
     bool getifkill();
-    //moze w main !!!!!!!!!!!!!!!!!!!!
+    void animate_bullet(const sf::Time &elapsed);
+    //moze w game !!!!!!!!!!!!!!!!!!!!
     //void update(game &);
 };
 
