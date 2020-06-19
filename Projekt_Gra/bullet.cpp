@@ -1,13 +1,12 @@
 #include "bullet.h"
 
 
-bullet::bullet(sf::Texture *tekstura, const sf::Vector2f &pozycja, float kierunek_x_, float kierune_y_, float speed_)
+bullet::bullet(sf::Texture *tekstura,float pozycja_x,float pozycja_y, float kierunek_x_, float kierune_y_)
 {
     this->setTexture(*tekstura);
-    this->setPosition(pozycja);
-    kierunek.x=kierunek_x_;
+    this->setPosition(pozycja_x,pozycja_y);
+    kierunek.x = kierunek_x_;
     kierunek.y = kierune_y_;
-    speed = speed_;
 }
 
 const sf::FloatRect bullet::getBounds() const
@@ -34,7 +33,7 @@ bool bullet::getifkill()
 void bullet::update_bullet_()
 {
     //Ruch bedzie nastepowal z kazdym wywolaniem
-    this->move(speed*kierunek.x,speed*kierunek.y);
+    this->move(speed*kierunek);
 }
 
 void bullet::draw_bullet(sf::RenderTarget *trg)

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
-
+#include <map>
 // Stworzone klasy
 #include "enemy.h"
 #include "player.h"
@@ -24,36 +24,50 @@ private:
     bool pauza = false;
     // ### Napisy
     sf::Text koncowy_c;
-    sf::Text czas_c;
+    sf::Text punkty_c;
     sf::Font czcionka_c;
     // ### Bufor do napisow
     std::stringstream ss;
-    // ### Statki przeciwnika
-    std::vector<Enemy> Enemy_c;
+    // ### Tekstury
+    std::map<std::string,sf::Texture*> Textury_c,Textury_c2,Textury_c3;
     // ### Gwiezdny pyl - element ozdobny do imitacji ruchu
     sf::Vertex pyl_c[750];
+    // ### Pociski
+    std::vector<bullet*> pociski;
+    // ### Punkty
+    int Punkty=0;
+    // ### Gracz
+    Player* gracz;
+    // ### Przeciwnicy
+    float czas_miedzy_przeciwnikami = 40;
+    std::vector<Enemy*> Przeciwnicy;
+    // ### Pasek zdrowia
+    sf::RectangleShape pasek_zdrowa,pasek_zdrowia_max;
 public:
     //settery i gettery
     void setPause(bool wybor);
     bool getPause();
     // --- Konstruktory
     Game();
-    Game(sf::String);
-    // --- Uruchamianie
+    // --- Destruktor
+    virtual ~Game();
+    // --- Update
+    void update_game();
+    // --- Run
     void run();
-    // --- Koniec gry
-    void gameover(Player &gracz);
-    // --- Wykrywanie kolizji
-    bool Kolizja(const std::vector<sf::Vector2f>&,const sf::Vector2f&);
-    bool Kolizja(const sf::Transform &,const std::vector<sf::Vector2f>&,const sf::Vector2f&);
-    // --- Aktualizacja przeciwnikow
-    void update_gry();
-    // --- Aktualizacja gracza
-    void update_player(Player &gracz);
-    // --- Rysowanie gracza
-    void draw_player(Player &gracz);
-    // --- Aktualizacja pociskow
-    void update_bullet(bullet &pocisk, Player &gracz);
+    // --- Rysowanie
+    void draw_game();
+    void draw_game_napisy();
+    void draw_game_tlo();
+    // --- Metody Update poszczegolnych klas
+    void update_akcja();
+    void update_przeciwnicy();
+    void update_pociski();
+    void update_kolizja();
+    void update_tlo();
+    void update_napisy();
+    void sterowanie();
+    void update_Events();//w run
 };
 
 #endif // GAME_H

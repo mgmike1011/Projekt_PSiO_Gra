@@ -10,12 +10,12 @@ bool Enemy::getifkill()
     return kill_c;
 }
 
-const int &Enemy::getPoints() const
+int &Enemy::getPoints()
 {
     return this->Punkty_enemy;
 }
 
-const int &Enemy::getDamage() const
+int &Enemy::getDamage()
 {
     return this->damage_;
 }
@@ -37,7 +37,7 @@ void Enemy::setkill(bool statement)
 
 Enemy::Enemy(sf::Vector2f &pozycja)
 {
-    int zmienna = rand()%10+2;
+    int zmienna = rand()%8+3;
     punkty_hpMax = zmienna;
     typ =0;
     punkty_hp = punkty_hpMax;

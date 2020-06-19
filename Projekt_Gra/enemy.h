@@ -15,7 +15,7 @@ private:
     // ### trafienie
     bool hit_c = false;
     // ### Prędkość
-    float speed_c = 30;
+    float speed_c = 5;
     // ### Kierunek
     float kierunek_c;
     // ### Punkty zdrowia
@@ -29,8 +29,8 @@ public:
     // --- settery i gettery
     void setTexture(sf::Texture tekstura_);
     bool getifkill();
-    const int& getPoints() const;
-    const int& getDamage() const;
+    int &getPoints();
+    int &getDamage();
     bool getifhit();
     void sethit(bool statement);
     void setkill(bool statement);

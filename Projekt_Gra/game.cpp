@@ -14,7 +14,7 @@ Game::Game() : sf::RenderWindow(sf::VideoMode(1280,720),"Space war")
 {
     this->setFramerateLimit(60);//ustawinie limitu klatek, 60, jak na nowej generacji konsol :)
     this->setActive(true);
-    //this->setVerticalSyncEnabled(false);
+    this->setVerticalSyncEnabled(false);
     //tlo
     backgroundtx_c.setRepeated(true);
     if(!backgroundtx_c.loadFromFile("resources/Tlo/tlo.png"))
@@ -36,27 +36,70 @@ Game::Game() : sf::RenderWindow(sf::VideoMode(1280,720),"Space war")
     {
         std::cout<<"Blad wczytania czcionki"<<std::endl;
     }
-    this->koncowy_c.setFont(czcionka_c); //dla napisu koncowego
-    koncowy_c.setPosition(560,360);
-    koncowy_c.setCharacterSize(30);
-    koncowy_c.setFillColor(sf::Color::White);
-    koncowy_c.setStyle(sf::Text::Bold);
-    this->czas_c.setFont(czcionka_c); //dla czasu
-    czas_c.setPosition(150,10);
-    czas_c.setCharacterSize(23);
-    czas_c.setFillColor(sf::Color::White);
-    czas_c.setStyle(sf::Text::Bold);
-    // Czas
-    time_c=sf::seconds(100);
+    // Ladowanie tekstury dla pociskow
+    Textury_c["Pocisk"] = new sf::Texture();
+    Textury_c["Pocisk"]->loadFromFile("resources/Pociski/laserBlue02.png");
+    Textury_c2["Pocisk"] = new sf::Texture();
+    Textury_c2["Pocisk"]->loadFromFile("resources/Pociski/laserGreen04.png");
+    Textury_c3["Pocisk"] = new sf::Texture();
+    Textury_c3["Pocisk"]->loadFromFile("resources/Pociski/laserRed03.png");
+    // Ustawienia napisow
+    punkty_c.setPosition(sf::Vector2f(1100,680));
+    punkty_c.setFont(czcionka_c);
+    punkty_c.setFillColor(sf::Color::White);
+    punkty_c.setCharacterSize(25);
+    // Napis konca gry
+    koncowy_c.setFont(czcionka_c);
+    koncowy_c.setPosition(sf::Vector2f(470,300));
+    koncowy_c.setFillColor(sf::Color::Red);
+    koncowy_c.setOutlineColor(sf::Color::White);
+    koncowy_c.setOutlineThickness(2);
+    koncowy_c.setCharacterSize(60);
+    koncowy_c.setString("Koniec gry!!!");
+    // Status zycia (pasek zdrowia)
+    pasek_zdrowa.setSize(sf::Vector2f(400,50));
+    pasek_zdrowa.setOutlineColor(sf::Color::White);
+    pasek_zdrowa.setOutlineThickness(2);
+    pasek_zdrowa.setFillColor(sf::Color::Red);
+    pasek_zdrowa.setPosition(sf::Vector2f(10,10));
+    pasek_zdrowia_max = pasek_zdrowa;
+    pasek_zdrowia_max.setFillColor(sf::Color::Black);
+    gracz = new Player;
+}
+
+Game::~Game()
+{
+    delete gracz;
+    for(auto *el : Przeciwnicy)
+    {
+        delete el;
+    }
+    for(auto &el : Textury_c)
+    {
+        delete el.second;
+    }
+    for(auto *el : pociski)
+    {
+        delete el;
+    }
+}
+
+void Game::update_game()
+{
+    this->sterowanie();
+    gracz->update_player();
+    update_kolizja();
+    update_pociski();
+    update_przeciwnicy();
+    update_akcja();
+    update_napisy();
+    update_tlo();
 }
 
 void Game::run()
 {
-    // Incjacja gracza
-    Player gracz;
     sf::Transform pyl_c_Move;//ruch pylu
     // Wydarzenia
-
     sf::Time tpause;
     sf::Clock zegar;
     while(this->isOpen())
@@ -68,223 +111,202 @@ void Game::run()
             {
                 this->close();
             }
-            if(event.type == sf::Event::KeyPressed)
-            {
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::P))
-                {
-                    if(pauza == true)
-                    {
-                        pauza = false;
-                        std::cout<<"Gra wznowiona."<<std::endl;
-                    } else
-                    {
-                        pauza = true;
-                        std::cout<<"Pauza gry, by kontynuwoac wcisnij przycisk \"p\"."<<std::endl;
-                    }
-                }
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-                {
-                    gracz.shoot();
-                }
-            }
         }
-        sf::Time elapsed = zegar.restart();
-
-        if(pauza==true)
+        if(gracz->gethp()>0)
         {
-            this->clear(sf::Color::Black);
-            this->draw(background_c);
-            this->display();
-            clock_c.restart();
-            tpause = time_c;
-            continue;
+            this->update_game();
         }
-        // Przeciwnicy
-        if(gracz.gethp()>0)
-        {
-            if(!rand()%30){
-                Enemy_c.emplace_back(Enemy());
-            }
-        }
-        if(pauza == false)
-        {
-            gracz.animate(elapsed);
-            for(auto &el : gracz.pociski)
-            {
-                el.animate_bullet(elapsed);
-            }
-        }
-        //Czyszczenie ekranu
-        clear(sf::Color::Black);
-        draw(background_c);
-        //pyl gwiezdny - imersja ruchu
-        draw(pyl_c,750,sf::PrimitiveType::Points);
-        for(auto &el:pyl_c)
-        {
-            el.position.x = el.position.x -(rand()%3+1);
-            if(pyl_c_Move.transformPoint(el.position).x<=0) //po wyjsciu za krawedz cofa je na sam poczatek
-            {
-                el.position.x = 1280;
-            }
-        }
-        if(gracz.gethp()>0)
-        {
-            update_gry();
-        }
-        if(gracz.gethp()<0)
-        {
-            gameover(gracz);
-        }
-        this->draw_player(gracz);
-        //Wyswietlanie czasu
-        ss.str("");
-        ss <<"Czas: "<<std::abs((int) time_c.asSeconds()) << " sek.";
-        czas_c.setString(ss.str());
-        ss.str("");
-        draw(czas_c);
-        //Wyswietlenie na ekranie wszystkiego
-        display();
-        if (!pauza)
-        {
-            time_c = tpause - clock_c.getElapsedTime();
-        }
+        this->draw_game();
     }
 }
 
-void Game::gameover(Player &gracz)
+void Game::draw_game()
 {
-    ss<<"Udalo ci sie zdobyc : "<<gracz.getPunkty();
-    koncowy_c.setString(ss.str());
-    draw(koncowy_c);
+    this->clear(sf::Color::Black);
+    this->draw_game_tlo();
+    gracz->draw_player(*this);
+    for(auto *el : pociski)
+    {
+        el->draw_bullet(this);
+    }
+    for(auto *el : Przeciwnicy)
+    {
+        el->draw_enemy(this);
+    }
+    this->draw_game_napisy();
+    if(gracz->gethp()<=0)
+    {
+        this->draw(koncowy_c);
+    }
+    sf::Transform pyl_c_Move;//ruch pylu
+    draw(pyl_c,750,sf::PrimitiveType::Points);
+    for(auto &el:pyl_c)
+    {
+        el.position.y = el.position.y -(rand()%3+1);
+        if(pyl_c_Move.transformPoint(el.position).y<=1290) //po wyjsciu za krawedz cofa je na sam poczatek
+        {
+            el.position.y = 0;
+        }
+    }
+    this->display();
 }
 
-bool Game::Kolizja(const std::vector<sf::Vector2f> &vec1, const sf::Vector2f &vec2)
+void Game::draw_game_napisy()
 {
-    //Algorytm przeksztalca kazdy kolejny bok figury jako wektor ma po swojej prawej stronie punkt
-    int jest=-1;
-    float a,b,c,d,e;
-    for(size_t i=0;i<vec1.size();i++)
-    {
-        a = vec1[i].x;
-        b = vec1[i].y;
-        if(i+1==vec1.size())
-        {
-            c=vec1[0].x;
-        } else {
-            c=vec1[i+1].x;
-        }
-        if(i+1==vec1.size())
-        {
-            d=vec1[0].x;
-        } else {
-            d=vec1[i+1].x;
-        }
-        e = (vec2.x-a)*(d-b)-(vec2.y-b)*(c-a);
-        if(e!=-1)
-        {
-            if(jest==-1)
-            {
-                jest=e>0;
-            } else if ((d>0)!=jest) {
-                return false;
-            }
-        }
-    }
-    return true;
+    this->draw(punkty_c);
+    this->draw(pasek_zdrowia_max);
+    this->draw(pasek_zdrowa);
 }
 
-void Game::update_gry()
+void Game::draw_game_tlo()
 {
-    Enemy *enemy;
-    for(auto it = Enemy_c.begin();it!=Enemy_c.end();it++)
-    {
-        enemy = &(*it);
-        if(enemy->getPosition().x<0||enemy->getPosition().y<-20||enemy->getifkill())
-        {
-            Enemy_c.erase(it);
-            it--;
-            continue;
-        }
-        enemy->update_enemy();
-        this->draw(*enemy);
-    }
+    this->draw(background_c);
 }
 
-void Game::update_player(Player &gracz)
+void Game::update_akcja()
 {
-    // Aktualizacja stanu zdrowia i paska stanu zdrowia
-    if(gracz.gethp()>0)
+    for(size_t i =0;i<Przeciwnicy.size();i++)
     {
-        gracz.pasek_zdrowia.setSize(sf::Vector2f(gracz.gethp(),10));
-        for (auto &el: Enemy_c)
+        bool likwidacja = false;
+        for(size_t j = 0; j<pociski.size() && likwidacja==false;j++ )
         {
-            if(el.getGlobalBounds().left<=gracz.getGlobalBounds().left+gracz.getGlobalBounds().width &&gracz.getGlobalBounds().intersects(el.getGlobalBounds()))
+            if(Przeciwnicy[i]->getGlobalBounds().intersects(pociski[j]->getGlobalBounds()))
             {
-                bool stoop = false;
-                for(auto & pkt:gracz.getPunktykolizji())
-                {
-                    sf::Vector2f p(pkt);
-                    float x = gracz.getTexture()->getSize().x/2;
-                    float y = gracz.getTexture()->getSize().y/2;
-                    if(Kolizja(el.getwierzcholki(),sf::Vector2f(gracz.getPosition().x-x+p.x,gracz.getPosition().y-y+p.y)))
-                    {
-                        el.setkill(true);
-                        gracz.sethp(gracz.gethp()-el.getPointCount());
-                        stoop = true;
-                        break;
-                    }
-                }
-                if(stoop)
-                {
-                    break;
-                }
-            }
-        }
-        // Aktualizacja stanu pociskow
-        for(auto &el:gracz.getpociski())
-        {
-            update_bullet(el,gracz);
-        }
-        for(auto it =  gracz.pociski.begin();it!=gracz.pociski.end();it++)
-        {
-            if(it->getifkill()||it->getPosition().x>1300)
-            {
-                gracz.pociski.erase(it);
+                Punkty+=Przeciwnicy[i]->getPoints();
+                delete Przeciwnicy[i];
+                Przeciwnicy.erase(Przeciwnicy.begin()+i);
+                delete pociski[j];
+                pociski.erase(pociski.begin()+j);
+                likwidacja=true;
             }
         }
     }
 }
-    void Game::draw_player(Player &gracz)
-    {
-        update_player(gracz);
-        this->draw(gracz);
-        if(gracz.gethp()>0)
-        {
-            this->draw(gracz.getpasek_zdrowia());
-        }
-        for(auto &el : gracz.pociski)
-        {
-            this->draw(el);
-        }
-        this->draw(gracz.tekst_hp);
-        this->draw(gracz.tekst_c);
-    }
 
-    void Game::update_bullet(bullet &pocisk, Player &gracz)
+void Game::update_przeciwnicy()
+{
+    czas_miedzy_przeciwnikami+=1;
+    if(czas_miedzy_przeciwnikami>=20)
     {
-        pocisk.move(pocisk.getspeed(),0);
-        // Trafienia
-        for(auto &el : Game::Enemy_c)
+        sf::Vector2f pozycja(rand()%1200,-20);
+        Przeciwnicy.emplace_back(new Enemy(pozycja));
+        czas_miedzy_przeciwnikami=0;
+    }
+    size_t ile =0;
+    for(auto *el : Przeciwnicy)
+    {
+        el->update_enemy();
+        auto bounds = el->getGlobalBounds();
+        if(bounds.top>720)
         {
-            //if(pocisk.getGlobalBounds().intersects(el.getGlobalBounds()) && Kolizja(el.getTransform(),el.getwierzcholki(),el.getPosition()))
-            if(pocisk.getGlobalBounds().intersects(el.getGlobalBounds()) && Kolizja(el.getwierzcholki(),el.getPosition()))
-            {
-                el.sethit(true);
-                pocisk.setkill(true);
-                if(gracz.gethp()>0)
-                {
-                    gracz.addPoint_forplayer();
-                }
-            }
+            delete Przeciwnicy.at(ile);
+            Przeciwnicy.erase(Przeciwnicy.begin()+ile);
+        }
+        else if (bounds.intersects(gracz->getGlobalBounds()))
+        {
+            gracz->minushp(Przeciwnicy.at(ile)->getDamage());
+            delete  Przeciwnicy.at(ile);
+            Przeciwnicy.erase(Przeciwnicy.begin()+ile);
+        }
+        ile++;
+    }
+}
+
+void Game::update_pociski()
+{
+    size_t miejsce =0;
+    for(auto *el : pociski)
+    {
+        el->update_bullet_();
+        auto bounds =el->getGlobalBounds();
+        if(bounds.top+bounds.height<0)
+        {
+            delete pociski.at(miejsce);
+            pociski.erase(pociski.begin()+miejsce);
+        }
+        ++miejsce;
+    }
+}
+
+void Game::update_kolizja()
+{
+    //Na podobe funkcji bounce z zajec
+    auto bounds = gracz->getGlobalBounds();
+    if(bounds.left<0)
+    {
+        gracz->setPosition(0,bounds.top);
+    }
+    else if(bounds.left+bounds.width>1279)
+    {
+        gracz->setPosition(1280-bounds.width,bounds.top);
+    }
+    if(bounds.top<0)
+    {
+        gracz->setPosition(bounds.left,0);
+    }
+    else if(bounds.top+bounds.height>719)
+    {
+        gracz->setPosition(bounds.left,720-bounds.height);
+    }
+}
+
+void Game::update_tlo()
+{
+    sf::Transform pyl_c_Move;//ruch pylu
+    draw(pyl_c,750,sf::PrimitiveType::Points);
+    for(auto &el:pyl_c)
+    {
+        el.position.y = el.position.y -(rand()%3+1);
+        if(pyl_c_Move.transformPoint(el.position).y<=1290) //po wyjsciu za krawedz cofa je na sam poczatek
+        {
+            el.position.y = 0;
         }
     }
+}
+
+void Game::update_napisy()
+{
+    ss<<"Punkty : "<<Punkty;
+    punkty_c.setString(ss.str());
+    ss<<" ";
+    float stan_zdrowia = gracz->gethp()/gracz->getHpMax();
+    pasek_zdrowa.setSize(sf::Vector2f(400*stan_zdrowia,50));
+}
+
+void Game::sterowanie()
+{
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        this->gracz->move(-10, 0);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        this->gracz->move(10, 0);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        this->gracz->move(0, -10);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        this->gracz->move(0, 10);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)&&gracz->canshoot())
+    {
+        int randomowa = rand()%3;
+        if(randomowa==0){
+            pociski.emplace_back(new bullet(Textury_c["Pocisk"],gracz->getPosition().x+40,gracz->getPosition().y,0,-1));
+        }
+        if(randomowa==1)
+        {
+            pociski.emplace_back(new bullet(Textury_c2["Pocisk"],gracz->getPosition().x+40,gracz->getPosition().y,0,-1));
+        }
+        if(randomowa==2)
+        {
+            pociski.emplace_back(new bullet(Textury_c3["Pocisk"],gracz->getPosition().x+40,gracz->getPosition().y,0,-1));
+        }
+    }
+}
+
+
+

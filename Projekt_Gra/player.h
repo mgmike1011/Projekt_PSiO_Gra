@@ -11,7 +11,7 @@ class Player : public sf::Sprite
 {
 private:
     // ### Predkosc
-    float speed =150;
+    float speed =5;
     // ### Punkty zdrowia
     int hp = 100;
     int hpMax =100;
@@ -23,7 +23,7 @@ private:
     // ### Zniszczenie
     bool Zniszony = false;
     // ### Spowolnienie
-    float Spowolnienie, SpowolnienieMax=5;
+    float Spowolnienie=20, SpowolnienieMax=20;
 public:
     sf::RectangleShape pasek_zdrowia;
     sf::Text tekst_c;
@@ -52,7 +52,7 @@ public:
     // --- Update
     void update_player();
     // --- Rysowanie na ekranie
-    void draw_player(sf::RenderTarget *trg);
+    void draw_player(sf::RenderTarget &trg);
     // --- Wirtualny destruktor
     virtual ~Player();
 };

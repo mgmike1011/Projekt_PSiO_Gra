@@ -10,6 +10,7 @@ Player::Player()
         std::cout<<"Nie udalo sie zadalowac grafiki gracza"<<std::endl;
     }
     this->setTexture(tekstura);
+    this->setScale(0.9,0.9);
     this->setPosition(600,710-tekstura.getSize().y);
 }
 
@@ -63,41 +64,24 @@ void Player::animate(const sf::Time &elapsed)
             move(0,std::abs(speed)*okres);
         }
     }
-    //if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-    //{
-    //    this->shoot();
-
-    //}
-    //Mozliwosc pouszania sie troche do przodu i tylu - do przemyslenia
-    /*
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-    {
-        if(bounds.left+bounds.width <450)//1280
-        {
-            move(okres*std::abs(speed),0);
-        }
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-    {
-        if(bounds.left>0)
-        {
-            move(okres*-std::abs(speed),0);
-        }
-    }
-    */
 }
 
 void Player::update_player()
 {
     if(Spowolnienie<SpowolnienieMax)
     {
-        Spowolnienie = Spowolnienie+3;
+        Spowolnienie += 3;
     }
 }
 
-void Player::draw_player(sf::RenderTarget *trg)
+void Player::draw_player(sf::RenderTarget &trg)
 {
-    trg->draw(*this);
+    trg.draw(*this);
+}
+
+Player::~Player()
+{
+
 }
 
 sf::RectangleShape Player::getpasek_zdrowia()
@@ -108,6 +92,16 @@ sf::RectangleShape Player::getpasek_zdrowia()
 void Player::addPoint_forplayer()
 {
     punkty++;
+}
+
+bool Player::canshoot()
+{
+    if(Spowolnienie>=SpowolnienieMax)
+    {
+        Spowolnienie=0;
+        return true;
+    }
+    return false;
 }
 
 void Player::Poruszanie(float &kierunek_x_, float &kierunek_y_)

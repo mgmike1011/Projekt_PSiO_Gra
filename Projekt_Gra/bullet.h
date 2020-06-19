@@ -7,14 +7,14 @@ class bullet : public sf::Sprite
 private:
     // Tekstura zostanie zaladowana na poczatku programu i przypisana na stale
     // ### Predkosc
-    float speed = 150;
+    float speed = 15;
     // ### Kill
     bool kill = false;
     // ### Kierunek poruszania sie
     sf::Vector2f kierunek;
 public:
     // --- Konstruktor
-    bullet(sf::Texture *tekstura,const sf::Vector2f& pozycja, float kierunek_x_, float kierune_y_, float speed_);
+    bullet(sf::Texture *tekstura,float pozycja_x,float pozycja_y, float kierunek_x_, float kierune_y_);
     // --- Do sprawdzania kolizji
     const sf::FloatRect getBounds() const;
     // --- settery i gettery
