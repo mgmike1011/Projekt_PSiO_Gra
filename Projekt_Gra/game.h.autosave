@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
-
+#include <map>
 // Stworzone klasy
 #include "enemy.h"
 #include "player.h"
@@ -15,23 +15,31 @@ class Game : public sf::RenderWindow
 {
 private:
     // ### Tło
-    sf::Texture backgroundtx_c;
-    sf::RectangleShape background_c;
+    sf::Texture backgroundtx_c;//+
+    sf::RectangleShape background_c;//+
     // ### Czas
     sf::Clock clock_c; //zegrar gry
     sf::Time time_c; //czas gry
     // ### Pauza
     bool pauza = false;
     // ### Napisy
-    sf::Text koncowy_c;
-    sf::Text czas_c;
-    sf::Font czcionka_c;
+    sf::Text koncowy_c; //+
+    sf::Text punkty_c; //+
+    sf::Font czcionka_c; //+
     // ### Bufor do napisow
     std::stringstream ss;
-    // ### Statki przeciwnika
-    std::vector<Enemy> Enemy_c;
+    // ### Tekstury
+    std::map<std::string,sf::Texture*> Textury_c;//+
     // ### Gwiezdny pyl - element ozdobny do imitacji ruchu
     sf::Vertex pyl_c[750];
+    // ### Pociski
+    std::vector<bullet*> pociski;//+
+    // ### Punkty
+    int Punkty;
+    // ### Gracz
+    Player* gracz;
+    // ### Przeciwnicy
+    float czas_miedzy_przeciw
 public:
     //settery i gettery
     void setPause(bool wybor);
