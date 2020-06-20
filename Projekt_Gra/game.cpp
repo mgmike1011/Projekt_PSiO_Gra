@@ -98,7 +98,6 @@ void Game::update_game()
 
 void Game::run()
 {
-    sf::Transform pyl_c_Move;//ruch pylu
     // Wydarzenia
     sf::Time tpause;
     sf::Clock zegar;
