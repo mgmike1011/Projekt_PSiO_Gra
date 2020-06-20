@@ -29,12 +29,16 @@ Game::Game() : sf::RenderWindow(sf::VideoMode(1280,720),"Space war")
     for(auto &el : pyl_c)
     {
         el.position = sf::Vector2f(rand()%1280,rand()%720);
-        el.color = sf::Color::White;
+        el.color = sf::Color(155+rand()%100, 155+rand()%100, 155+rand()%100, 255);
     }
     // Przypisanie czcionki
     if(!czcionka_c.loadFromFile("resources/Czcionki/OpenSans-Bold.ttf"))
     {
         std::cout<<"Blad wczytania czcionki"<<std::endl;
+    }
+    if(!tekstura_przeciwnika.loadFromFile("resources/Przeciwnik/meteorGrey_big2.png"))
+    {
+        std::cout<<"Blad Tekstury przeciwnika"<<std::endl;
     }
     // Ladowanie tekstury dla pociskow
     Textury_c["Pocisk"] = new sf::Texture();
@@ -48,6 +52,7 @@ Game::Game() : sf::RenderWindow(sf::VideoMode(1280,720),"Space war")
     punkty_c.setFont(czcionka_c);
     punkty_c.setFillColor(sf::Color::White);
     punkty_c.setCharacterSize(25);
+    punkty_c.setString("Punkty");
     // Napis konca gry
     koncowy_c.setFont(czcionka_c);
     koncowy_c.setPosition(sf::Vector2f(470,300));
@@ -137,16 +142,6 @@ void Game::draw_game()
     {
         this->draw(koncowy_c);
     }
-    sf::Transform pyl_c_Move;//ruch pylu
-    draw(pyl_c,750,sf::PrimitiveType::Points);
-    for(auto &el:pyl_c)
-    {
-        el.position.y = el.position.y -(rand()%3+1);
-        if(pyl_c_Move.transformPoint(el.position).y<=1290) //po wyjsciu za krawedz cofa je na sam poczatek
-        {
-            el.position.y = 0;
-        }
-    }
     this->display();
 }
 
@@ -159,7 +154,17 @@ void Game::draw_game_napisy()
 
 void Game::draw_game_tlo()
 {
+    sf::Transform pyl_c_Move;//ruch pylu
     this->draw(background_c);
+    this->draw(pyl_c,750,sf::PrimitiveType::Points);
+    for(size_t i =0;i<750;i++)
+    {
+        pyl_c[i].position.x = pyl_c[i].position.x -(i%2+1);
+        if(pyl_c_Move.transformPoint(Game::pyl_c[i].position).x<=0) //po wyjsciu za krawedz cofa je na sam poczatek
+        {
+            pyl_c[i].position = sf::Vector2f(1280,pyl_c[i].position.y);
+        }
+    }
 }
 
 void Game::update_akcja()
@@ -188,7 +193,7 @@ void Game::update_przeciwnicy()
     if(czas_miedzy_przeciwnikami>=20)
     {
         sf::Vector2f pozycja(rand()%1200,-20);
-        Przeciwnicy.emplace_back(new Enemy(pozycja));
+        Przeciwnicy.emplace_back(new Enemy(pozycja,tekstura_przeciwnika));
         czas_miedzy_przeciwnikami=0;
     }
     size_t ile =0;
@@ -265,10 +270,11 @@ void Game::update_tlo()
 
 void Game::update_napisy()
 {
+    std::stringstream ss;
     ss<<"Punkty : "<<Punkty;
     punkty_c.setString(ss.str());
-    ss<<" ";
-    float stan_zdrowia = gracz->gethp()/gracz->getHpMax();
+    float rzut = gracz->gethp();
+    float stan_zdrowia = rzut/gracz->getHpMax();
     pasek_zdrowa.setSize(sf::Vector2f(400*stan_zdrowia,50));
 }
 
@@ -276,19 +282,19 @@ void Game::sterowanie()
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
-        this->gracz->move(-10, 0);
+        this->gracz->move(-5, 0);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
-        this->gracz->move(10, 0);
+        this->gracz->move(5, 0);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     {
-        this->gracz->move(0, -10);
+        this->gracz->move(0, -5);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
     {
-        this->gracz->move(0, 10);
+        this->gracz->move(0, 5);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)&&gracz->canshoot())
     {

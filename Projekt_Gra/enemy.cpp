@@ -49,11 +49,28 @@ Enemy::Enemy(sf::Vector2f &pozycja)
         std::cout<<"Nie udalo sie zaladowac tekstury statku przeciwnika"<<std::endl;
     }
     //Ustawianie tekstury
+    setFillColor(sf::Color(rand()%255,rand()%255,rand()%255));
     this->setTexture(Tekstura);
     //Ustwienia figury
-    this->setRadius(25);
-    this->setPointCount(5);
     this->setPosition(pozycja);
+    this->setSize(sf::Vector2f(98,75));
+}
+
+Enemy::Enemy(sf::Vector2f &pozycja, sf::Texture tekstura)
+{
+    int zmienna = rand()%8+3;
+    punkty_hpMax = zmienna;
+    typ =0;
+    punkty_hp = punkty_hpMax;
+    damage_ = zmienna;
+    Punkty_enemy = zmienna;
+    //Ustawianie tekstury
+    this->setTexture(tekstura);
+    //Ustwienia figury
+    setFillColor(sf::Color(rand()%255,rand()%255,rand()%255));
+    this->setPosition(pozycja);
+    this->setSize(sf::Vector2f(50,50));
+    rotate(90);
 }
 
 void Enemy::draw_enemy(sf::RenderTarget *trg)

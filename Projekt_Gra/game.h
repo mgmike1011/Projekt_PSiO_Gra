@@ -30,6 +30,7 @@ private:
     std::stringstream ss;
     // ### Tekstury
     std::map<std::string,sf::Texture*> Textury_c,Textury_c2,Textury_c3;
+    sf::Texture tekstura_przeciwnika;
     // ### Gwiezdny pyl - element ozdobny do imitacji ruchu
     sf::Vertex pyl_c[750];
     // ### Pociski

@@ -9,6 +9,7 @@ Player::Player()
     {
         std::cout<<"Nie udalo sie zadalowac grafiki gracza"<<std::endl;
     }
+    tekstura.setSmooth(true);
     this->setTexture(tekstura);
     this->setScale(0.9,0.9);
     this->setPosition(600,710-tekstura.getSize().y);
@@ -31,10 +32,7 @@ void Player::sethp(int &i)
 
 void Player::minushp(int &i)
 {
-    if(hp>0)
-    {
-        hp=hp-i;
-    }
+    hp=hp-i;
     if(hp<0)
     {
         hp=0;

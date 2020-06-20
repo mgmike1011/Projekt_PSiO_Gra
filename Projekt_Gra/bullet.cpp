@@ -33,7 +33,7 @@ bool bullet::getifkill()
 void bullet::update_bullet_()
 {
     //Ruch bedzie nastepowal z kazdym wywolaniem
-    this->move(speed*kierunek);
+    this->move(speed*kierunek.x,speed*kierunek.y);
 }
 
 void bullet::draw_bullet(sf::RenderTarget *trg)

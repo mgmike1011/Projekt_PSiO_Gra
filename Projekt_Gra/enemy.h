@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
-class Enemy : public sf::CircleShape
+class Enemy : public sf::RectangleShape
 {
 private:
     // ### Tekstura
@@ -36,6 +36,7 @@ public:
     void setkill(bool statement);
     // --- Konstrutor
     Enemy(sf::Vector2f & pozycja);
+    Enemy(sf::Vector2f &pozycja, sf::Texture tekstura);
     // --- Wyswietlanie na ekranie
     void draw_enemy(sf::RenderTarget * trg);
     // --- Granice obiektu
