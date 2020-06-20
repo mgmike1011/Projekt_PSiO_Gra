@@ -87,6 +87,12 @@ Game::Game() : sf::RenderWindow(sf::VideoMode(1280,720),"Space war")
         std::cout<<"Blad ladowanie muzyki"<<std::endl;
     }
     muzyka.setVolume(50);
+    if(!trafienie_buffer.loadFromFile("resources/Dzwieki/zapTwoTone2.ogg"))
+    {
+        std::cout<<"Blad ladowanie dzwieku trafienia"<<std::endl;
+    }
+    trafienie_dzwiek.setVolume(15);
+    trafienie_dzwiek.setBuffer(trafienie_buffer);
 }
 
 Game::~Game()
@@ -195,6 +201,7 @@ void Game::update_akcja()
         {
             if(Przeciwnicy[i]->getGlobalBounds().intersects(pociski[j]->getGlobalBounds()))
             {
+                trafienie_dzwiek.play();
                 Punkty+=Przeciwnicy[i]->getPoints();
                 delete Przeciwnicy[i];
                 Przeciwnicy.erase(Przeciwnicy.begin()+i);

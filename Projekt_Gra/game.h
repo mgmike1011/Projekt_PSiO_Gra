@@ -46,8 +46,8 @@ private:
     // ### Pasek zdrowia
     sf::RectangleShape pasek_zdrowa,pasek_zdrowia_max;
     // ### Dzwieki
-    sf::SoundBuffer pocisk, zderzenie_buffer;
-    sf::Sound pocisk_s,zderzenie_dzwiek;
+    sf::SoundBuffer pocisk, zderzenie_buffer,trafienie_buffer;
+    sf::Sound pocisk_s,zderzenie_dzwiek,trafienie_dzwiek;
     // ### Muzyka
     sf::Music muzyka;
 
