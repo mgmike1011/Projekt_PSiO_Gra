@@ -2,6 +2,7 @@
 #define GAME_H
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <vector>
 #include <sstream>
@@ -44,6 +45,12 @@ private:
     std::vector<Enemy*> Przeciwnicy;
     // ### Pasek zdrowia
     sf::RectangleShape pasek_zdrowa,pasek_zdrowia_max;
+    // ### Dzwieki
+    sf::SoundBuffer pocisk, zderzenie_buffer;
+    sf::Sound pocisk_s,zderzenie_dzwiek;
+    // ### Muzyka
+    sf::Music muzyka;
+
 public:
     //settery i gettery
     void setPause(bool wybor);

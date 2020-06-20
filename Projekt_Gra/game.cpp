@@ -70,6 +70,23 @@ Game::Game() : sf::RenderWindow(sf::VideoMode(1280,720),"Space war")
     pasek_zdrowia_max = pasek_zdrowa;
     pasek_zdrowia_max.setFillColor(sf::Color::Black);
     gracz = new Player;
+    if(!pocisk.loadFromFile("resources/Dzwieki/laser1.ogg"))
+    {
+        std::cout<<"Blad ladowanie dzwieku wystrzalu"<<std::endl;
+    }
+    pocisk_s.setBuffer(pocisk);
+    pocisk_s.setVolume(75);
+    if(!zderzenie_buffer.loadFromFile("resources/Dzwieki/twoTone2.ogg"))
+    {
+        std::cout<<"Blad ladowanie dzwieku kolizji"<<std::endl;
+    }
+    zderzenie_dzwiek.setBuffer(zderzenie_buffer);
+    zderzenie_dzwiek.setVolume(90);
+    if(!muzyka.openFromFile("resources/Muzyka/Quarkstar_-_Space_Fiction.ogg"))
+    {
+        std::cout<<"Blad ladowanie muzyki"<<std::endl;
+    }
+    muzyka.setVolume(50);
 }
 
 Game::~Game()
@@ -106,6 +123,7 @@ void Game::run()
     // Wydarzenia
     sf::Time tpause;
     sf::Clock zegar;
+    muzyka.play();
     while(this->isOpen())
     {
         sf::Event event;
@@ -120,6 +138,7 @@ void Game::run()
         {
             this->update_game();
         }
+
         this->draw_game();
     }
 }
@@ -211,6 +230,7 @@ void Game::update_przeciwnicy()
             gracz->minushp(Przeciwnicy.at(ile)->getDamage());
             delete  Przeciwnicy.at(ile);
             Przeciwnicy.erase(Przeciwnicy.begin()+ile);
+            zderzenie_dzwiek.play();
         }
         ile++;
     }
@@ -301,14 +321,17 @@ void Game::sterowanie()
         int randomowa = rand()%3;
         if(randomowa==0){
             pociski.emplace_back(new bullet(Textury_c["Pocisk"],gracz->getPosition().x+40,gracz->getPosition().y,0,-1));
+            pocisk_s.play();
         }
         if(randomowa==1)
         {
             pociski.emplace_back(new bullet(Textury_c2["Pocisk"],gracz->getPosition().x+40,gracz->getPosition().y,0,-1));
+            pocisk_s.play();
         }
         if(randomowa==2)
         {
             pociski.emplace_back(new bullet(Textury_c3["Pocisk"],gracz->getPosition().x+40,gracz->getPosition().y,0,-1));
+            pocisk_s.play();
         }
     }
 }
