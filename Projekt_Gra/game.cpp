@@ -69,7 +69,7 @@ Game::Game() : sf::RenderWindow(sf::VideoMode(1280,720),"Space war")
     pasek_zdrowa.setPosition(sf::Vector2f(10,10));
     pasek_zdrowia_max = pasek_zdrowa;
     pasek_zdrowia_max.setFillColor(sf::Color::Black);
-    gracz = new Player;
+    gracz =std::make_unique<Player>();
     if(!pocisk.loadFromFile("resources/Dzwieki/laser1.ogg"))
     {
         std::cout<<"Blad ladowanie dzwieku wystrzalu"<<std::endl;
@@ -91,13 +91,13 @@ Game::Game() : sf::RenderWindow(sf::VideoMode(1280,720),"Space war")
     {
         std::cout<<"Blad ladowanie dzwieku trafienia"<<std::endl;
     }
-    trafienie_dzwiek.setVolume(15);
+    trafienie_dzwiek.setVolume(13);
     trafienie_dzwiek.setBuffer(trafienie_buffer);
 }
 
 Game::~Game()
 {
-    delete gracz;
+    //delete gracz;
     for(auto *el : Przeciwnicy)
     {
         delete el;
@@ -184,8 +184,8 @@ void Game::draw_game_tlo()
     this->draw(pyl_c,750,sf::PrimitiveType::Points);
     for(size_t i =0;i<750;i++)
     {
-        pyl_c[i].position.x = pyl_c[i].position.x -(i%2+1);
-        if(pyl_c_Move.transformPoint(Game::pyl_c[i].position).x<=0) //po wyjsciu za krawedz cofa je na sam poczatek
+        pyl_c[i].position.y = pyl_c[i].position.y -(i%2+1);
+        if(pyl_c_Move.transformPoint(Game::pyl_c[i].position).y<=0) //po wyjsciu za krawedz cofa je na sam poczatek
         {
             pyl_c[i].position = sf::Vector2f(1280,pyl_c[i].position.y);
         }

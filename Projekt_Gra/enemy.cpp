@@ -56,7 +56,7 @@ Enemy::Enemy(sf::Vector2f &pozycja)
     this->setSize(sf::Vector2f(98,75));
 }
 
-Enemy::Enemy(sf::Vector2f &pozycja, sf::Texture tekstura)
+Enemy::Enemy(sf::Vector2f &pozycja, sf::Texture tekstura_)
 {
     int zmienna = rand()%8+3;
     punkty_hpMax = zmienna;
@@ -65,12 +65,12 @@ Enemy::Enemy(sf::Vector2f &pozycja, sf::Texture tekstura)
     damage_ = zmienna;
     Punkty_enemy = zmienna;
     //Ustawianie tekstury
-    this->setTexture(tekstura);
+    this->setTexture(tekstura_);
     //Ustwienia figury
-    setFillColor(sf::Color(rand()%255,rand()%255,rand()%255));
+    this->setFillColor(sf::Color(rand()%255,rand()%255,rand()%255));
     this->setPosition(pozycja);
     this->setSize(sf::Vector2f(50,50));
-    rotate(90);
+    //rotate(90);
 }
 
 void Enemy::draw_enemy(sf::RenderTarget *trg)

@@ -7,6 +7,7 @@
 #include <vector>
 #include <sstream>
 #include <map>
+#include <memory>
 // Stworzone klasy
 #include "enemy.h"
 #include "player.h"
@@ -39,7 +40,7 @@ private:
     // ### Punkty
     int Punkty=0;
     // ### Gracz
-    Player* gracz;
+    std::unique_ptr<Player> gracz;
     // ### Przeciwnicy
     float czas_miedzy_przeciwnikami = 40;
     std::vector<Enemy*> Przeciwnicy;

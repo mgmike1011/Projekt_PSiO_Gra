@@ -36,7 +36,7 @@ public:
     void setkill(bool statement);
     // --- Konstrutor
     Enemy(sf::Vector2f & pozycja);
-    Enemy(sf::Vector2f &pozycja, sf::Texture tekstura);
+    Enemy(sf::Vector2f &pozycja, sf::Texture tekstura_);
     // --- Wyswietlanie na ekranie
     void draw_enemy(sf::RenderTarget * trg);
     // --- Granice obiektu
