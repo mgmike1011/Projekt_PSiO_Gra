@@ -87,6 +87,7 @@ Game::Game() : sf::RenderWindow(sf::VideoMode(1280,720),"Space war")
         std::cout<<"Blad ladowanie muzyki"<<std::endl;
     }
     muzyka.setVolume(50);
+    muzyka.setLoop(true);
     if(!trafienie_buffer.loadFromFile("resources/Dzwieki/zapTwoTone2.ogg"))
     {
         std::cout<<"Blad ladowanie dzwieku trafienia"<<std::endl;
@@ -97,7 +98,6 @@ Game::Game() : sf::RenderWindow(sf::VideoMode(1280,720),"Space war")
 
 Game::~Game()
 {
-    //delete gracz;
     for(auto *el : Przeciwnicy)
     {
         delete el;
@@ -153,11 +153,11 @@ void Game::draw_game()
 {
     this->clear(sf::Color::Black);
     this->draw_game_tlo();
-    gracz->draw_player(*this);
     for(auto *el : pociski)
     {
         el->draw_bullet(this);
     }
+    gracz->draw_player(*this);
     for(auto *el : Przeciwnicy)
     {
         el->draw_enemy(this);
@@ -299,10 +299,12 @@ void Game::update_napisy()
 {
     std::stringstream ss;
     ss<<"Punkty : "<<Punkty;
+    ss.clear();
     punkty_c.setString(ss.str());
-    float rzut = gracz->gethp();
-    float stan_zdrowia = rzut/gracz->getHpMax();
+    //float rzut = gracz->gethp();
+    float stan_zdrowia = static_cast<float>(gracz->gethp())/gracz->getHpMax();
     pasek_zdrowa.setSize(sf::Vector2f(400*stan_zdrowia,50));
+    ss.clear();
 }
 
 void Game::sterowanie()
